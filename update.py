@@ -18,7 +18,10 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 TOP_N = 100
-UA = {"User-Agent": "Mozilla/5.0"}
+UA = {"User-Agent": "StrongBuyTop100/1.0 (https://github.com/yuunseong20-hash/strongbut_top100) python-requests"}
+
+# Wikipedia 접속 실패 대비 Nasdaq-100 기본 목록 (2026년 기준)
+NDX_FALLBACK = """ADBE AMD ABNB ALNY GOOGL GOOG AMZN AEP AMGN ADI AAPL AMAT APP ARM ASML ALAB ADSK ADP AXON BKR BKNG AVGO CDNS CTAS CSCO CCEP CMCSA CEG CPRT CRWV COST CRWD CSX DDOG DXCM FANG DASH EA EXC FAST FER FTNT GEHC GILD HON IDXX INTC INTU ISRG KDP KLAC KHC LRCX LIN LITE MAR MRVL MELI META MCHP MU MSFT MSTR MDLZ MPWR MNST NBIS NFLX NVDA NXPI ORLY ODFL PCAR PLTR PANW PAYX PYPL PDD PEP QCOM REGN RKLB ROP ROST SNDK STX SHOP SBUX SNPS TMUS TTWO TER TSLA TXN TRI VRTX WMT WBD WDC WDAY XEL""".split()
 
 
 # ---------- 1. 대상 종목 ----------
@@ -31,13 +34,19 @@ def get_universe():
     for url, col in srcs:
         try:
             html = requests.get(url, headers=UA, timeout=20).text
+            found = False
             for t in pd.read_html(StringIO(html)):
                 c = next((x for x in (col, "Ticker", "Symbol") if x in t.columns), None)
                 if c and len(t) >= 90:
                     tickers |= set(t[c].astype(str).str.strip())
+                    print(f"  {url.rsplit('/',1)[-1]}: {len(t)}개")
+                    found = True
                     break
+            if not found:
+                print(f"[경고] 표를 찾지 못함: {url}")
         except Exception as e:
             print(f"[경고] 종목 목록 실패: {url} ({e})")
+    tickers |= set(NDX_FALLBACK)
     # Yahoo 표기: BRK.B -> BRK-B
     return sorted(t.replace(".", "-") for t in tickers if t and t != "nan")
 
