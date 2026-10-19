@@ -52,8 +52,63 @@ def get_universe():
 
 
 # ---------- 2. 종목별 데이터 ----------
+EVENT_DAYS = 30          # 목표가 변경 내역 보관 기간(일)
+EVENTS = []              # 증권사별 의견·목표가 변경 기록
+TARGETS = {}             # 종목별 컨센서스 목표가
+
+
+def _num(v):
+    try:
+        v = float(v)
+        return round(v, 2) if v == v and v > 0 else None
+    except (TypeError, ValueError):
+        return None
+
+
+def fetch_targets(tk, ticker):
+    """목표가 컨센서스와 최근 증권사별 변경 내역 (실패해도 본 표에는 영향 없음)"""
+    price = None
+    try:
+        price = _num(tk.fast_info["last_price"])
+    except Exception:
+        pass
+    try:
+        pt = tk.analyst_price_targets or {}
+        TARGETS[ticker] = {
+            "price": price or _num(pt.get("current")),
+            "mean": _num(pt.get("mean")), "median": _num(pt.get("median")),
+            "high": _num(pt.get("high")), "low": _num(pt.get("low")),
+        }
+    except Exception as e:
+        print(f"  {ticker} 목표가 실패: {e}")
+    try:
+        ud = tk.upgrades_downgrades
+        if ud is None or ud.empty:
+            return
+        ud = ud.reset_index()
+        datecol = "GradeDate" if "GradeDate" in ud.columns else ud.columns[0]
+        ud[datecol] = pd.to_datetime(ud[datecol], utc=True, errors="coerce")
+        cutoff = pd.Timestamp.utcnow() - pd.Timedelta(days=EVENT_DAYS)
+        for r in ud[ud[datecol] >= cutoff].to_dict("records"):
+            EVENTS.append({
+                "date": r[datecol].strftime("%Y-%m-%d"),
+                "ticker": ticker,
+                "firm": str(r.get("Firm") or ""),
+                "from_grade": str(r.get("FromGrade") or ""),
+                "to_grade": str(r.get("ToGrade") or ""),
+                "action": str(r.get("Action") or ""),          # up/down/main/init/reit
+                "pt_action": str(r.get("priceTargetAction") or ""),  # Raises/Lowers/Maintains/Announces
+                "pt_from": _num(r.get("priorPriceTarget")),
+                "pt_to": _num(r.get("currentPriceTarget")),
+                "price": price,
+            })
+    except Exception as e:
+        print(f"  {ticker} 변경내역 실패: {e}")
+
+
 def fetch(ticker):
     tk = yf.Ticker(ticker)
+    fetch_targets(tk, ticker)
     rec = tk.recommendations  # period: 0m(이번 달), -1m, -2m, -3m
     if rec is None or rec.empty:
         return None
@@ -191,8 +246,27 @@ def main():
         "count": len(tickers),
         "rows": rows,
     }
+    for row in rows:
+        t = TARGETS.get(row["ticker"], {})
+        row["price"], row["tp"] = t.get("price"), t.get("mean")
+        row["upside"] = round((t["mean"] / t["price"] - 1) * 100, 1) if t.get("mean") and t.get("price") else None
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
+
+    # 목표가 변경 내역
+    ev = sorted(EVENTS, key=lambda e: (e["date"], e["ticker"]), reverse=True)
+    top_set = {r["ticker"] for r in rows}
+    for e in ev:
+        e["top100"] = e["ticker"] in top_set
+        if e["pt_from"] and e["pt_to"]:
+            e["pt_chg"] = round((e["pt_to"] / e["pt_from"] - 1) * 100, 1)
+        else:
+            e["pt_chg"] = None
+        e["upside"] = round((e["pt_to"] / e["price"] - 1) * 100, 1) if e["pt_to"] and e["price"] else None
+    with open("docs/targets.json", "w", encoding="utf-8") as f:
+        json.dump({"updated": today.isoformat(), "days": EVENT_DAYS,
+                   "events": ev, "targets": TARGETS}, f, ensure_ascii=False, separators=(",", ":"))
+    print(f"목표가 변경 {len(ev)}건 저장")
     write_excel(df[cols], today, "docs/strong_buy_top100.xlsx")
     print(f"저장 완료: {json_path}, docs/strong_buy_top100.xlsx")
 

@@ -44,8 +44,8 @@ thead tr.sub th{padding:5px 8px;font-size:12px}
 thead th.s{background:var(--sbuy)} thead th.b{background:var(--buy);color:#111}
 thead th.h{background:var(--hold);color:#111} thead th.l{background:var(--sell);color:#111}
 thead th.ss{background:var(--ssell)}
-thead th[data-k].on::after{content:" ▼";font-size:10px}
-thead th[data-k].on.asc::after{content:" ▲"}
+thead th:is([data-k],[data-s]).on::after{content:" ▼";font-size:10px}
+thead th:is([data-k],[data-s]).on.asc::after{content:" ▲"}
 tbody tr{border-top:1px solid var(--line)}
 tbody tr:nth-child(even){background:var(--row)}
 td.tk{font-weight:700;letter-spacing:.01em}
@@ -57,6 +57,26 @@ td.chg{font-size:12px;width:56px}
 .up{color:var(--up)} .down{color:var(--down)} .new{color:var(--up);font-weight:700}
 .bar{display:flex;height:8px;border-radius:4px;overflow:hidden;min-width:110px;background:var(--line)}
 .bar span{display:block;height:100%}
+.tabs{display:flex;gap:4px;margin:18px 0 4px;border-bottom:1px solid var(--line)}
+.tabs button{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-size:15px;font-weight:700;
+  padding:10px 14px;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer}
+.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+.seg button{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-size:13px;padding:9px 11px;cursor:pointer}
+.seg button.on{background:var(--ink);color:var(--bg);font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}
+.stat b{font-size:22px;letter-spacing:-.02em}
+td.l{text-align:left} td.r{text-align:right}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--line);color:var(--ink)}
+.pill.up{background:color-mix(in srgb,var(--up) 15%,transparent);color:var(--up)}
+.pill.down{background:color-mix(in srgb,var(--down) 15%,transparent);color:var(--down)}
+.arrow{color:var(--muted);margin:0 4px}
+.firm{max-width:180px;overflow:hidden;text-overflow:ellipsis}
+td.tk button{all:unset;cursor:pointer;font-weight:700} td.tk button:hover{text-decoration:underline}
+.note{font-size:12px;color:var(--muted);margin:8px 2px 0}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)} .stat b{font-size:19px} .firm{max-width:90px}}
 .empty{padding:40px;text-align:center;color:var(--muted)}
 footer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
 @media (max-width:640px){header h1{font-size:21px} .hide-sm{display:none}
@@ -66,10 +86,16 @@ footer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
 <body>
 <div class="wrap">
   <header>
-    <h1>최근 2개월 Strong Buy 상위 100</h1>
-    <p>애널리스트 Strong Buy 의견이 많은 미국 대형주 순위입니다. 매일 아침 자동으로 갱신됩니다.</p>
+    <h1>애널리스트 컨센서스 트래커</h1>
+    <p>미국 대형주(S&amp;P 500 + Nasdaq-100)의 애널리스트 의견과 목표가 변경을 매일 아침 자동으로 모읍니다.</p>
   </header>
 
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-v="rank">Strong Buy Top 100</button>
+    <button role="tab" aria-selected="false" data-v="tp">목표가 변경</button>
+  </nav>
+
+  <section id="v-rank">
   <div class="meta" id="meta"></div>
 
   <div class="tools">
@@ -94,6 +120,7 @@ footer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
           <th rowspan="2" data-k="ticker">티커</th>
           <th rowspan="2" data-k="mcap">시총<br>(억USD)</th>
           <th colspan="5" id="periodTh">2달간 애널리스트 의견</th>
+          <th rowspan="2" class="hide-sm" data-k="upside">목표가<br>여력</th>
           <th rowspan="2" class="hide-sm" data-k="ratio">의견 분포</th>
         </tr>
         <tr class="sub">
@@ -102,12 +129,28 @@ footer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
           <th class="ss" data-k="ssell">S_sell</th>
         </tr>
       </thead>
-      <tbody id="tb"><tr><td colspan="10" class="empty">불러오는 중…</td></tr></tbody>
+      <tbody id="tb"><tr><td colspan="11" class="empty">불러오는 중…</td></tr></tbody>
     </table>
   </div></div>
+  </section>
+
+  <section id="v-tp" hidden>
+    <div class="stats" id="tpStats"></div>
+    <div class="tools">
+      <input type="search" id="tq" placeholder="티커 또는 증권사 검색" aria-label="티커 또는 증권사 검색">
+    </div>
+    <div class="tools">
+      <div class="seg" id="segView"><button data-v="feed" class="on">변경 내역</button><button data-v="sum">종목별 요약</button></div>
+      <div class="seg" id="segType"><button data-v="all" class="on">전체</button><button data-v="raise">상향</button><button data-v="lower">하향</button><button data-v="grade">의견변경</button></div>
+      <div class="seg" id="segDays"><button data-v="7">7일</button><button data-v="30" class="on">30일</button></div>
+      <div class="seg" id="segUni"><button data-v="top" class="on">Top 100</button><button data-v="all">전체</button></div>
+    </div>
+    <div class="card"><div class="scroll"><table id="tpTable"></table></div></div>
+    <p class="note" id="tpNote"></p>
+  </section>
 
   <footer>
-    데이터: Yahoo Finance 애널리스트 추천 집계(이번 달 + 지난 달 합산). 대상: <span id="uni">S&amp;P 500 + Nasdaq-100</span>.
+    데이터: Yahoo Finance 애널리스트 추천 집계(이번 달 + 지난 달 합산)와 증권사별 의견·목표가 변경 기록. 목표가 여력 = 평균 목표가 ÷ 현재가 − 1. 대상: <span id="uni">S&amp;P 500 + Nasdaq-100</span>.
     정렬 기준: Strong Buy → Buy → 시가총액. 변동은 직전 갱신 대비 순위 변화입니다.<br>
     투자 권유가 아닌 참고용 자료입니다.
   </footer>
@@ -115,6 +158,8 @@ footer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
 
 <script>
 let D=null, key="rank", asc=true;
+const pct=(v,plus=true)=>v==null?'<span class="zero">–</span>':`<span class="${v>0?"up":v<0?"down":""}">${v>0&&plus?"+":""}${v.toFixed(1)}%</span>`;
+const usd=v=>v==null?"–":"$"+v.toLocaleString("en-US",{maximumFractionDigits:v<100?2:0});
 const fmt=n=>n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const total=r=>r.sbuy+r.buy+r.hold+r.sell+r.ssell;
@@ -136,21 +181,22 @@ function cell(v,cls=""){return `<td class="${cls}${v===0?" zero":""}">${v}</td>`
 function render(){
   const q=document.getElementById("q").value.trim().toUpperCase();
   let rows=D.rows.filter(r=>!q||r.ticker.includes(q));
-  const val=r=>key==="ratio"?r.sbuy/(total(r)||1):key==="change"?(r.new?999:(r.change??-999)):r[key];
+  const val=r=>key==="upside"?(r.upside??-1e9):key==="ratio"?r.sbuy/(total(r)||1):key==="change"?(r.new?999:(r.change??-999)):r[key];
   rows.sort((a,b)=>{const x=val(a),y=val(b);return (x<y?-1:x>y?1:0)*(asc?1:-1)});
   document.getElementById("tb").innerHTML=rows.length?rows.map(r=>`<tr>
     <td>${r.rank}</td><td class="chg hide-sm">${chg(r)}</td>
     <td class="tk"><a href="https://finance.yahoo.com/quote/${encodeURIComponent(r.ticker)}" target="_blank" rel="noopener">${esc(r.ticker)}</a></td>
     <td class="cap">${fmt(r.mcap)}</td>
     ${cell(r.sbuy,"sb")}${cell(r.buy)}${cell(r.hold)}${cell(r.sell)}${cell(r.ssell)}
+    <td class="hide-sm" title="${r.tp?'평균 목표가 $'+r.tp:''}">${pct(r.upside)}</td>
     <td class="hide-sm">${bar(r)}</td></tr>`).join("")
-    :'<tr><td colspan="10" class="empty">검색 결과가 없습니다.</td></tr>';
+    :'<tr><td colspan="11" class="empty">검색 결과가 없습니다.</td></tr>';
 }
 
-document.querySelectorAll("th[data-k]").forEach(th=>th.addEventListener("click",()=>{
+document.querySelectorAll("#v-rank th[data-k]").forEach(th=>th.addEventListener("click",()=>{
   const k=th.dataset.k;
   if(k===key) asc=!asc; else {key=k; asc=(k==="rank"||k==="ticker");}
-  document.querySelectorAll("th[data-k]").forEach(t=>t.classList.remove("on","asc"));
+  document.querySelectorAll("#v-rank th[data-k]").forEach(t=>t.classList.remove("on","asc"));
   th.classList.add("on"); if(asc) th.classList.add("asc");
   render();
 }));
@@ -168,8 +214,103 @@ fetch("data.json?t="+Date.now()).then(r=>r.json()).then(d=>{
   document.getElementById("uni").textContent=d.universe;
   render();
 }).catch(()=>{
-  document.getElementById("tb").innerHTML='<tr><td colspan="10" class="empty">데이터를 불러오지 못했습니다. 첫 자동 갱신이 끝나면 표시됩니다.</td></tr>';
+  document.getElementById("tb").innerHTML='<tr><td colspan="11" class="empty">데이터를 불러오지 못했습니다. 첫 자동 갱신이 끝나면 표시됩니다.</td></tr>';
 });
+
+/* ---------- 탭 ---------- */
+function showTab(v){
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));
+  document.getElementById("v-rank").hidden=v!=="rank";
+  document.getElementById("v-tp").hidden=v!=="tp";
+  if(v==="tp") loadTP();
+  try{history.replaceState(null,"",v==="tp"?"#tp":location.pathname)}catch(e){}
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.v)));
+
+/* ---------- 목표가 변경 ---------- */
+let T=null, tpLoading=false;
+const F={view:"feed",type:"all",days:30,uni:"top",sk:null,sasc:false};
+const isRaise=e=>/raise/i.test(e.pt_action)||(e.pt_from&&e.pt_to&&e.pt_to>e.pt_from);
+const isLower=e=>/lower/i.test(e.pt_action)||(e.pt_from&&e.pt_to&&e.pt_to<e.pt_from);
+const isGrade=e=>e.action==="up"||e.action==="down";
+const gradePill=e=>{
+  const m={up:["up","의견↑"],down:["down","의견↓"],init:["","신규"]}[e.action];
+  const g=e.from_grade&&e.from_grade!==e.to_grade&&e.action!=="init"
+    ?`${esc(e.from_grade)}<span class="arrow">→</span>${esc(e.to_grade)}`:esc(e.to_grade||"–");
+  return (m?`<span class="pill ${m[0]}">${m[1]}</span> `:"")+g;
+};
+function seg(id,key,num){
+  document.querySelectorAll(`#${id} button`).forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll(`#${id} button`).forEach(x=>x.classList.toggle("on",x===b));
+    F[key]=num?+b.dataset.v:b.dataset.v; F.sk=null; renderTP();
+  }));
+}
+seg("segView","view");seg("segType","type");seg("segDays","days",true);seg("segUni","uni");
+document.getElementById("tq").addEventListener("input",renderTP);
+
+function loadTP(){
+  if(T||tpLoading) return; tpLoading=true;
+  document.getElementById("tpTable").innerHTML='<tbody><tr><td class="empty">불러오는 중…</td></tr></tbody>';
+  fetch("targets.json?t="+Date.now()).then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>{T=d;renderTP()})
+  .catch(()=>{document.getElementById("tpTable").innerHTML='<tbody><tr><td class="empty">목표가 데이터가 아직 없습니다. 다음 자동 갱신 후 표시됩니다.</td></tr></tbody>'})
+  .finally(()=>tpLoading=false);
+}
+function baseEvents(){
+  const since=new Date(T.updated); since.setDate(since.getDate()-F.days+1);
+  const s=since.toISOString().slice(0,10);
+  return T.events.filter(e=>e.date>=s&&(F.uni==="all"||e.top100));
+}
+function renderTP(){
+  if(!T) return;
+  const q=document.getElementById("tq").value.trim().toUpperCase();
+  let ev=baseEvents();
+  const st=[["목표가 상향",ev.filter(isRaise).length,"up"],["목표가 하향",ev.filter(isLower).length,"down"],
+            ["의견 상향",ev.filter(e=>e.action==="up").length,"up"],["의견 하향",ev.filter(e=>e.action==="down").length,"down"]];
+  document.getElementById("tpStats").innerHTML=st.map(([l,n,c])=>`<div class="stat"><small>최근 ${F.days}일 ${l}</small><b class="${c}">${n}</b>건</div>`).join("");
+  if(F.type==="raise") ev=ev.filter(isRaise);
+  if(F.type==="lower") ev=ev.filter(isLower);
+  if(F.type==="grade") ev=ev.filter(isGrade);
+  if(q) ev=ev.filter(e=>e.ticker.includes(q)||e.firm.toUpperCase().includes(q));
+  const tb=document.getElementById("tpTable");
+  if(F.view==="feed"){
+    tb.innerHTML=`<thead><tr><th>날짜</th><th>티커</th><th>증권사</th><th>투자의견</th><th>목표가 (이전 → 변경)</th><th>변경률</th><th class="hide-sm">현재가 대비</th></tr></thead><tbody>`+
+    (ev.length?ev.slice(0,600).map(e=>`<tr><td>${e.date.slice(5).replace("-","/")}</td>
+      <td class="tk"><button data-t="${esc(e.ticker)}">${esc(e.ticker)}</button></td>
+      <td class="l firm" title="${esc(e.firm)}">${esc(e.firm)}</td>
+      <td class="l">${gradePill(e)}</td>
+      <td class="r">${e.pt_from&&e.pt_from!==e.pt_to?`<span class="zero" style="opacity:1">${usd(e.pt_from)}</span><span class="arrow">→</span>`:""}<b>${usd(e.pt_to)}</b></td>
+      <td>${e.pt_chg?pct(e.pt_chg):'<span class="zero">–</span>'}</td>
+      <td class="hide-sm">${pct(e.upside)}</td></tr>`).join("")
+      :'<tr><td colspan="7" class="empty">조건에 맞는 변경 내역이 없습니다.</td></tr>')+"</tbody>";
+    document.getElementById("tpNote").textContent=ev.length>600?`최근 600건만 표시 (전체 ${ev.length}건)`:`${ev.length}건 · 티커를 누르면 해당 종목만 봅니다.`;
+  }else{
+    const m={};
+    ev.forEach(e=>{const r=m[e.ticker]??={ticker:e.ticker,raise:0,lower:0,gup:0,gdn:0,chgs:[]};
+      if(isRaise(e))r.raise++; if(isLower(e))r.lower++; if(e.action==="up")r.gup++; if(e.action==="down")r.gdn++;
+      if(e.pt_chg!=null)r.chgs.push(e.pt_chg);});
+    let rows=Object.values(m).map(r=>{const t=T.targets[r.ticker]||{};
+      return {...r,net:r.raise-r.lower,avg:r.chgs.length?r.chgs.reduce((a,b)=>a+b,0)/r.chgs.length:null,
+        tp:t.mean,price:t.price,up:t.mean&&t.price?(t.mean/t.price-1)*100:null}});
+    const k=F.sk||"net", dir=F.sk?(F.sasc?1:-1):-1;
+    rows.sort((a,b)=>((a[k]??-1e9)>(b[k]??-1e9)?1:(a[k]??-1e9)<(b[k]??-1e9)?-1:(b.raise-a.raise))*dir);
+    const H=[["ticker","티커"],["raise","목표가↑"],["lower","목표가↓"],["net","순상향"],["avg","평균 변경률"],["gup","의견↑"],["gdn","의견↓"],["tp","평균 목표가"],["up","여력"]];
+    tb.innerHTML=`<thead><tr>${H.map(([kk,l])=>`<th data-s="${kk}" class="${k===kk?"on"+(dir>0?" asc":""):""}${["gup","gdn","price"].includes(kk)?" hide-sm":""}">${l}</th>`).join("")}</tr></thead><tbody>`+
+    (rows.length?rows.map(r=>`<tr><td class="tk"><button data-t="${esc(r.ticker)}">${esc(r.ticker)}</button></td>
+      ${cell(r.raise,"up")}${cell(r.lower,"down")}<td><b class="${r.net>0?"up":r.net<0?"down":""}">${r.net>0?"+":""}${r.net}</b></td>
+      <td>${r.avg==null?'<span class="zero">–</span>':pct(r.avg)}</td>
+      <td class="hide-sm${r.gup?"":" zero"}">${r.gup}</td><td class="hide-sm${r.gdn?"":" zero"}">${r.gdn}</td>
+      <td class="r">${usd(r.tp)}</td><td>${pct(r.up)}</td></tr>`).join("")
+      :'<tr><td colspan="9" class="empty">조건에 맞는 종목이 없습니다.</td></tr>')+"</tbody>";
+    tb.querySelectorAll("th[data-s]").forEach(th=>{th.style.cursor="pointer";th.addEventListener("click",()=>{
+      const kk=th.dataset.s; if(F.sk===kk)F.sasc=!F.sasc; else {F.sk=kk;F.sasc=kk==="ticker";} renderTP();})});
+    document.getElementById("tpNote").textContent=`${rows.length}개 종목 · 순상향 = 목표가 상향 건수 − 하향 건수 · 티커를 누르면 변경 내역을 봅니다.`;
+  }
+  tb.querySelectorAll("td.tk button").forEach(b=>b.addEventListener("click",()=>{
+    document.getElementById("tq").value=b.dataset.t;
+    document.querySelector('#segView button[data-v="feed"]').click();
+  }));
+}
+if(location.hash==="#tp") showTab("tp");
 </script>
 </body>
 </html>
