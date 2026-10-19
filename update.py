@@ -52,7 +52,7 @@ def get_universe():
 
 
 # ---------- 2. 종목별 데이터 ----------
-EVENT_DAYS = 30          # 목표가 변경 내역 보관 기간(일)
+EVENT_DAYS = 90          # 목표가 변경 내역 보관 기간(일)
 EVENTS = []              # 증권사별 의견·목표가 변경 기록
 TARGETS = {}             # 종목별 컨센서스 목표가
 
@@ -209,7 +209,7 @@ def main():
     if df.empty:
         sys.exit("데이터를 하나도 받지 못했습니다. 기존 페이지를 유지합니다.")
     df = (df.sort_values(["S_buy", "buy", "시총(억USD)"], ascending=False)
-            .head(TOP_N).reset_index(drop=True))
+            .reset_index(drop=True))   # 전체 순위 (웹은 상위 100 기본 표시, 검색 시 전체)
     cols = ["티커", "시총(억USD)", "S_buy", "buy", "hold", "sell", "S_sell"]
 
     os.makedirs("docs", exist_ok=True)
@@ -236,7 +236,7 @@ def main():
             "sbuy": int(r[2]), "buy": int(r[3]), "hold": int(r[4]),
             "sell": int(r[5]), "ssell": int(r[6]),
             "change": (prev_rank[t] - i) if t in prev_rank else None,
-            "new": bool(prev_rank) and t not in prev_rank,
+            "new": bool(prev_rank) and t not in prev_rank and i <= TOP_N,
         })
     data = {
         "updated": today.isoformat(),
@@ -255,7 +255,7 @@ def main():
 
     # 목표가 변경 내역
     ev = sorted(EVENTS, key=lambda e: (e["date"], e["ticker"]), reverse=True)
-    top_set = {r["ticker"] for r in rows}
+    top_set = {r["ticker"] for r in rows if r["rank"] <= TOP_N}
     for e in ev:
         e["top100"] = e["ticker"] in top_set
         if e["pt_from"] and e["pt_to"]:
@@ -267,7 +267,7 @@ def main():
         json.dump({"updated": today.isoformat(), "days": EVENT_DAYS,
                    "events": ev, "targets": TARGETS}, f, ensure_ascii=False, separators=(",", ":"))
     print(f"목표가 변경 {len(ev)}건 저장")
-    write_excel(df[cols], today, "docs/strong_buy_top100.xlsx")
+    write_excel(df[cols].head(TOP_N), today, "docs/strong_buy_top100.xlsx")
     print(f"저장 완료: {json_path}, docs/strong_buy_top100.xlsx")
 
 

@@ -99,7 +99,7 @@ footer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
   <div class="meta" id="meta"></div>
 
   <div class="tools">
-    <input type="search" id="q" placeholder="티커 검색 (예: NVDA)" aria-label="티커 검색">
+    <input type="search" id="q" placeholder="티커 검색 (예: INTC) · 100위 밖 종목도 검색됩니다" aria-label="티커 검색">
     <a class="btn" href="strong_buy_top100.xlsx" download>엑셀 다운로드</a>
   </div>
 
@@ -142,7 +142,7 @@ footer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
     <div class="tools">
       <div class="seg" id="segView"><button data-v="feed" class="on">변경 내역</button><button data-v="sum">종목별 요약</button></div>
       <div class="seg" id="segType"><button data-v="all" class="on">전체</button><button data-v="raise">상향</button><button data-v="lower">하향</button><button data-v="grade">의견변경</button></div>
-      <div class="seg" id="segDays"><button data-v="7">7일</button><button data-v="30" class="on">30일</button></div>
+      <div class="seg" id="segDays"><button data-v="7">7일</button><button data-v="30" class="on">30일</button><button data-v="60">60일</button><button data-v="90">90일</button></div>
       <div class="seg" id="segUni"><button data-v="top" class="on">Top 100</button><button data-v="all">전체</button></div>
     </div>
     <div class="card"><div class="scroll"><table id="tpTable"></table></div></div>
@@ -158,6 +158,11 @@ footer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
 
 <script>
 let D=null, key="rank", asc=true;
+/* 검색: 입력이 티커와 정확히 같으면 그 종목만, 아니면 앞글자 일치 */
+function tickerMatcher(q,all){
+  if(!q) return ()=>true;
+  return all.has(q)?(t=>t===q):(t=>t.startsWith(q));
+}
 const pct=(v,plus=true)=>v==null?'<span class="zero">–</span>':`<span class="${v>0?"up":v<0?"down":""}">${v>0&&plus?"+":""}${v.toFixed(1)}%</span>`;
 const usd=v=>v==null?"–":"$"+v.toLocaleString("en-US",{maximumFractionDigits:v<100?2:0});
 const fmt=n=>n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -180,7 +185,8 @@ function cell(v,cls=""){return `<td class="${cls}${v===0?" zero":""}">${v}</td>`
 
 function render(){
   const q=document.getElementById("q").value.trim().toUpperCase();
-  let rows=D.rows.filter(r=>!q||r.ticker.includes(q));
+  const m=tickerMatcher(q,new Set(D.rows.map(r=>r.ticker)));
+  let rows=q?D.rows.filter(r=>m(r.ticker)):D.rows.filter(r=>r.rank<=100);
   const val=r=>key==="upside"?(r.upside??-1e9):key==="ratio"?r.sbuy/(total(r)||1):key==="change"?(r.new?999:(r.change??-999)):r[key];
   rows.sort((a,b)=>{const x=val(a),y=val(b);return (x<y?-1:x>y?1:0)*(asc?1:-1)});
   document.getElementById("tb").innerHTML=rows.length?rows.map(r=>`<tr>
@@ -255,22 +261,27 @@ function loadTP(){
   .catch(()=>{document.getElementById("tpTable").innerHTML='<tbody><tr><td class="empty">목표가 데이터가 아직 없습니다. 다음 자동 갱신 후 표시됩니다.</td></tr></tbody>'})
   .finally(()=>tpLoading=false);
 }
-function baseEvents(){
+function baseEvents(q){
   const since=new Date(T.updated); since.setDate(since.getDate()-F.days+1);
   const s=since.toISOString().slice(0,10);
-  return T.events.filter(e=>e.date>=s&&(F.uni==="all"||e.top100));
+  // 검색 중에는 Top 100 여부와 관계없이 전체 종목에서 찾음
+  return T.events.filter(e=>e.date>=s&&(q||F.uni==="all"||e.top100));
 }
 function renderTP(){
   if(!T) return;
   const q=document.getElementById("tq").value.trim().toUpperCase();
-  let ev=baseEvents();
+  let ev=baseEvents(q);
+  if(q){
+    const known=new Set(Object.keys(T.targets));
+    ev=known.has(q)?ev.filter(e=>e.ticker===q)
+      :ev.filter(e=>e.ticker.startsWith(q)||e.firm.toUpperCase().includes(q));
+  }
   const st=[["목표가 상향",ev.filter(isRaise).length,"up"],["목표가 하향",ev.filter(isLower).length,"down"],
             ["의견 상향",ev.filter(e=>e.action==="up").length,"up"],["의견 하향",ev.filter(e=>e.action==="down").length,"down"]];
-  document.getElementById("tpStats").innerHTML=st.map(([l,n,c])=>`<div class="stat"><small>최근 ${F.days}일 ${l}</small><b class="${c}">${n}</b>건</div>`).join("");
+  document.getElementById("tpStats").innerHTML=st.map(([l,n,c])=>`<div class="stat"><small>${q?esc(q)+" · ":""}최근 ${F.days}일 ${l}</small><b class="${c}">${n}</b>건</div>`).join("");
   if(F.type==="raise") ev=ev.filter(isRaise);
   if(F.type==="lower") ev=ev.filter(isLower);
   if(F.type==="grade") ev=ev.filter(isGrade);
-  if(q) ev=ev.filter(e=>e.ticker.includes(q)||e.firm.toUpperCase().includes(q));
   const tb=document.getElementById("tpTable");
   if(F.view==="feed"){
     tb.innerHTML=`<thead><tr><th>날짜</th><th>티커</th><th>증권사</th><th>투자의견</th><th>목표가 (이전 → 변경)</th><th>변경률</th><th class="hide-sm">현재가 대비</th></tr></thead><tbody>`+
