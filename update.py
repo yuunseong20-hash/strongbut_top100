@@ -32,8 +32,9 @@ def get_universe():
         try:
             html = requests.get(url, headers=UA, timeout=20).text
             for t in pd.read_html(StringIO(html)):
-                if col in t.columns:
-                    tickers |= set(t[col].astype(str).str.strip())
+                c = next((x for x in (col, "Ticker", "Symbol") if x in t.columns), None)
+                if c and len(t) >= 90:
+                    tickers |= set(t[c].astype(str).str.strip())
                     break
         except Exception as e:
             print(f"[경고] 종목 목록 실패: {url} ({e})")
