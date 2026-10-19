@@ -3,7 +3,7 @@
  "prev_updated": null,
  "period": "Sep~Oct",
  "universe": "S&P 500 + Nasdaq-100",
- "count": 503,
+ "count": 519,
  "rows": [
   {
    "rank": 1,
@@ -55,6 +55,18 @@
   },
   {
    "rank": 5,
+   "ticker": "SHOP",
+   "mcap": 2181.12,
+   "sbuy": 22,
+   "buy": 62,
+   "hold": 22,
+   "sell": 2,
+   "ssell": 0,
+   "change": null,
+   "new": false
+  },
+  {
+   "rank": 6,
    "ticker": "NVDA",
    "mcap": 51705.97,
    "sbuy": 20,
@@ -66,7 +78,7 @@
    "new": false
   },
   {
-   "rank": 6,
+   "rank": 7,
    "ticker": "DDOG",
    "mcap": 887.31,
    "sbuy": 20,
@@ -78,7 +90,7 @@
    "new": false
   },
   {
-   "rank": 7,
+   "rank": 8,
    "ticker": "PANW",
    "mcap": 2797.56,
    "sbuy": 20,
@@ -90,7 +102,7 @@
    "new": false
   },
   {
-   "rank": 8,
+   "rank": 9,
    "ticker": "CRWD",
    "mcap": 2328.33,
    "sbuy": 20,
@@ -102,7 +114,7 @@
    "new": false
   },
   {
-   "rank": 9,
+   "rank": 10,
    "ticker": "XYZ",
    "mcap": 467.96,
    "sbuy": 20,
@@ -114,7 +126,7 @@
    "new": false
   },
   {
-   "rank": 10,
+   "rank": 11,
    "ticker": "WMT",
    "mcap": 9426.08,
    "sbuy": 20,
@@ -126,7 +138,7 @@
    "new": false
   },
   {
-   "rank": 11,
+   "rank": 12,
    "ticker": "FSLR",
    "mcap": 185.54,
    "sbuy": 20,
@@ -138,7 +150,7 @@
    "new": false
   },
   {
-   "rank": 12,
+   "rank": 13,
    "ticker": "NOW",
    "mcap": 1467.77,
    "sbuy": 19,
@@ -150,7 +162,7 @@
    "new": false
   },
   {
-   "rank": 13,
+   "rank": 14,
    "ticker": "MU",
    "mcap": 9943.4,
    "sbuy": 18,
@@ -162,7 +174,7 @@
    "new": false
   },
   {
-   "rank": 14,
+   "rank": 15,
    "ticker": "UBER",
    "mcap": 1436.94,
    "sbuy": 18,
@@ -174,7 +186,7 @@
    "new": false
   },
   {
-   "rank": 15,
+   "rank": 16,
    "ticker": "V",
    "mcap": 7558.42,
    "sbuy": 18,
@@ -186,7 +198,7 @@
    "new": false
   },
   {
-   "rank": 16,
+   "rank": 17,
    "ticker": "DASH",
    "mcap": 819.58,
    "sbuy": 18,
@@ -198,7 +210,7 @@
    "new": false
   },
   {
-   "rank": 17,
+   "rank": 18,
    "ticker": "MA",
    "mcap": 5408.66,
    "sbuy": 18,
@@ -210,7 +222,7 @@
    "new": false
   },
   {
-   "rank": 18,
+   "rank": 19,
    "ticker": "TMUS",
    "mcap": 1706.62,
    "sbuy": 18,
@@ -222,7 +234,7 @@
    "new": false
   },
   {
-   "rank": 19,
+   "rank": 20,
    "ticker": "MRVL",
    "mcap": 2047.52,
    "sbuy": 17,
@@ -234,7 +246,7 @@
    "new": false
   },
   {
-   "rank": 20,
+   "rank": 21,
    "ticker": "META",
    "mcap": 18070.23,
    "sbuy": 16,
@@ -246,7 +258,31 @@
    "new": false
   },
   {
-   "rank": 21,
+   "rank": 22,
+   "ticker": "CRWV",
+   "mcap": 338.59,
+   "sbuy": 16,
+   "buy": 45,
+   "hold": 16,
+   "sell": 4,
+   "ssell": 2,
+   "change": null,
+   "new": false
+  },
+  {
+   "rank": 23,
+   "ticker": "ARM",
+   "mcap": 2432.9,
+   "sbuy": 16,
+   "buy": 42,
+   "hold": 24,
+   "sell": 2,
+   "ssell": 2,
+   "change": null,
+   "new": false
+  },
+  {
+   "rank": 24,
    "ticker": "ABBV",
    "mcap": 5043.71,
    "sbuy": 16,
@@ -258,7 +294,7 @@
    "new": false
   },
   {
-   "rank": 22,
+   "rank": 25,
    "ticker": "KKR",
    "mcap": 773.85,
    "sbuy": 16,
@@ -270,7 +306,7 @@
    "new": false
   },
   {
-   "rank": 23,
+   "rank": 26,
    "ticker": "AXON",
    "mcap": 317.06,
    "sbuy": 16,
@@ -282,7 +318,7 @@
    "new": false
   },
   {
-   "rank": 24,
+   "rank": 27,
    "ticker": "ISRG",
    "mcap": 1507.44,
    "sbuy": 15,
@@ -294,7 +330,7 @@
    "new": false
   },
   {
-   "rank": 25,
+   "rank": 28,
    "ticker": "BSX",
    "mcap": 643.31,
    "sbuy": 15,
@@ -306,7 +342,7 @@
    "new": false
   },
   {
-   "rank": 26,
+   "rank": 29,
    "ticker": "SYK",
    "mcap": 1130.24,
    "sbuy": 15,
@@ -318,7 +354,7 @@
    "new": false
   },
   {
-   "rank": 27,
+   "rank": 30,
    "ticker": "VEEV",
    "mcap": 502.5,
    "sbuy": 15,
@@ -330,7 +366,7 @@
    "new": false
   },
   {
-   "rank": 28,
+   "rank": 31,
    "ticker": "AVGO",
    "mcap": 15693.31,
    "sbuy": 14,
@@ -342,7 +378,19 @@
    "new": false
   },
   {
-   "rank": 29,
+   "rank": 32,
+   "ticker": "ASML",
+   "mcap": 6326.71,
+   "sbuy": 14,
+   "buy": 62,
+   "hold": 5,
+   "sell": 2,
+   "ssell": 0,
+   "change": null,
+   "new": false
+  },
+  {
+   "rank": 33,
    "ticker": "ORCL",
    "mcap": 3887.29,
    "sbuy": 14,
@@ -354,7 +402,7 @@
    "new": false
   },
   {
-   "rank": 30,
+   "rank": 34,
    "ticker": "NFLX",
    "mcap": 2936.83,
    "sbuy": 14,
@@ -366,7 +414,7 @@
    "new": false
   },
   {
-   "rank": 31,
+   "rank": 35,
    "ticker": "ANET",
    "mcap": 2232.12,
    "sbuy": 14,
@@ -378,7 +426,7 @@
    "new": false
   },
   {
-   "rank": 32,
+   "rank": 36,
    "ticker": "ADSK",
    "mcap": 501.39,
    "sbuy": 14,
@@ -390,7 +438,7 @@
    "new": false
   },
   {
-   "rank": 33,
+   "rank": 37,
    "ticker": "APP",
    "mcap": 894.04,
    "sbuy": 14,
@@ -402,7 +450,7 @@
    "new": false
   },
   {
-   "rank": 34,
+   "rank": 38,
    "ticker": "SLB",
    "mcap": 734.65,
    "sbuy": 14,
@@ -414,7 +462,7 @@
    "new": false
   },
   {
-   "rank": 35,
+   "rank": 39,
    "ticker": "CVS",
    "mcap": 1181.26,
    "sbuy": 14,
@@ -426,7 +474,7 @@
    "new": false
   },
   {
-   "rank": 36,
+   "rank": 40,
    "ticker": "UNH",
    "mcap": 3603.21,
    "sbuy": 14,
@@ -438,7 +486,7 @@
    "new": false
   },
   {
-   "rank": 37,
+   "rank": 41,
    "ticker": "AMT",
    "mcap": 863.28,
    "sbuy": 14,
@@ -450,7 +498,7 @@
    "new": false
   },
   {
-   "rank": 38,
+   "rank": 42,
    "ticker": "GM",
    "mcap": 736.71,
    "sbuy": 14,
@@ -462,7 +510,7 @@
    "new": false
   },
   {
-   "rank": 39,
+   "rank": 43,
    "ticker": "KO",
    "mcap": 4040.09,
    "sbuy": 14,
@@ -474,7 +522,19 @@
    "new": false
   },
   {
-   "rank": 40,
+   "rank": 44,
+   "ticker": "ALAB",
+   "mcap": 495.86,
+   "sbuy": 14,
+   "buy": 23,
+   "hold": 15,
+   "sell": 0,
+   "ssell": 0,
+   "change": null,
+   "new": false
+  },
+  {
+   "rank": 45,
    "ticker": "SCHW",
    "mcap": 1590.3,
    "sbuy": 14,
@@ -486,7 +546,7 @@
    "new": false
   },
   {
-   "rank": 41,
+   "rank": 46,
    "ticker": "BA",
    "mcap": 1503.36,
    "sbuy": 13,
@@ -498,7 +558,7 @@
    "new": false
   },
   {
-   "rank": 42,
+   "rank": 47,
    "ticker": "CRM",
    "mcap": 1980.96,
    "sbuy": 12,
@@ -510,9 +570,9 @@
    "new": false
   },
   {
-   "rank": 43,
+   "rank": 48,
    "ticker": "BKNG",
-   "mcap": 1266.54,
+   "mcap": 1228.13,
    "sbuy": 12,
    "buy": 50,
    "hold": 14,
@@ -522,7 +582,7 @@
    "new": false
   },
   {
-   "rank": 44,
+   "rank": 49,
    "ticker": "GEV",
    "mcap": 2453.46,
    "sbuy": 12,
@@ -534,7 +594,7 @@
    "new": false
   },
   {
-   "rank": 45,
+   "rank": 50,
    "ticker": "ADI",
    "mcap": 1916.17,
    "sbuy": 12,
@@ -546,7 +606,7 @@
    "new": false
   },
   {
-   "rank": 46,
+   "rank": 51,
    "ticker": "DIS",
    "mcap": 1909.54,
    "sbuy": 12,
@@ -558,7 +618,7 @@
    "new": false
   },
   {
-   "rank": 47,
+   "rank": 52,
    "ticker": "VRTX",
    "mcap": 1266.65,
    "sbuy": 12,
@@ -570,7 +630,7 @@
    "new": false
   },
   {
-   "rank": 48,
+   "rank": 53,
    "ticker": "LLY",
    "mcap": 11209.46,
    "sbuy": 12,
@@ -582,7 +642,7 @@
    "new": false
   },
   {
-   "rank": 49,
+   "rank": 54,
    "ticker": "AAPL",
    "mcap": 50125.17,
    "sbuy": 12,
@@ -594,7 +654,7 @@
    "new": false
   },
   {
-   "rank": 50,
+   "rank": 55,
    "ticker": "TWLO",
    "mcap": 375.29,
    "sbuy": 12,
@@ -606,7 +666,7 @@
    "new": false
   },
   {
-   "rank": 51,
+   "rank": 56,
    "ticker": "HOOD",
    "mcap": 888.92,
    "sbuy": 12,
@@ -618,7 +678,7 @@
    "new": false
   },
   {
-   "rank": 52,
+   "rank": 57,
    "ticker": "CCL",
    "mcap": 348.25,
    "sbuy": 12,
@@ -630,7 +690,7 @@
    "new": false
   },
   {
-   "rank": 53,
+   "rank": 58,
    "ticker": "SPGI",
    "mcap": 1266.58,
    "sbuy": 12,
@@ -642,7 +702,19 @@
    "new": false
   },
   {
-   "rank": 54,
+   "rank": 59,
+   "ticker": "ALNY",
+   "mcap": 310.21,
+   "sbuy": 12,
+   "buy": 33,
+   "hold": 14,
+   "sell": 0,
+   "ssell": 0,
+   "change": null,
+   "new": false
+  },
+  {
+   "rank": 60,
    "ticker": "GILD",
    "mcap": 1936.69,
    "sbuy": 12,
@@ -654,7 +726,7 @@
    "new": false
   },
   {
-   "rank": 55,
+   "rank": 61,
    "ticker": "RDDT",
    "mcap": 300.41,
    "sbuy": 12,
@@ -666,7 +738,7 @@
    "new": false
   },
   {
-   "rank": 56,
+   "rank": 62,
    "ticker": "BAC",
    "mcap": 3582.38,
    "sbuy": 12,
@@ -678,7 +750,7 @@
    "new": false
   },
   {
-   "rank": 57,
+   "rank": 63,
    "ticker": "NXPI",
    "mcap": 578.29,
    "sbuy": 12,
@@ -690,7 +762,7 @@
    "new": false
   },
   {
-   "rank": 58,
+   "rank": 64,
    "ticker": "TRGP",
    "mcap": 632.36,
    "sbuy": 12,
@@ -702,7 +774,7 @@
    "new": false
   },
   {
-   "rank": 59,
+   "rank": 65,
    "ticker": "HAL",
    "mcap": 279.1,
    "sbuy": 12,
@@ -714,7 +786,7 @@
    "new": false
   },
   {
-   "rank": 60,
+   "rank": 66,
    "ticker": "CVX",
    "mcap": 4413.41,
    "sbuy": 12,
@@ -726,7 +798,7 @@
    "new": false
   },
   {
-   "rank": 61,
+   "rank": 67,
    "ticker": "CEG",
    "mcap": 961.48,
    "sbuy": 12,
@@ -738,7 +810,7 @@
    "new": false
   },
   {
-   "rank": 62,
+   "rank": 68,
    "ticker": "TYL",
    "mcap": 147.78,
    "sbuy": 12,
@@ -750,7 +822,7 @@
    "new": false
   },
   {
-   "rank": 63,
+   "rank": 69,
    "ticker": "EFX",
    "mcap": 189.44,
    "sbuy": 12,
@@ -762,7 +834,7 @@
    "new": false
   },
   {
-   "rank": 64,
+   "rank": 70,
    "ticker": "WELL",
    "mcap": 1692.26,
    "sbuy": 12,
@@ -774,7 +846,7 @@
    "new": false
   },
   {
-   "rank": 65,
+   "rank": 71,
    "ticker": "FCX",
    "mcap": 998.61,
    "sbuy": 12,
@@ -786,7 +858,7 @@
    "new": false
   },
   {
-   "rank": 66,
+   "rank": 72,
    "ticker": "CI",
    "mcap": 798.8,
    "sbuy": 12,
@@ -798,7 +870,7 @@
    "new": false
   },
   {
-   "rank": 67,
+   "rank": 73,
    "ticker": "TPR",
    "mcap": 238.48,
    "sbuy": 12,
@@ -810,7 +882,7 @@
    "new": false
   },
   {
-   "rank": 68,
+   "rank": 74,
    "ticker": "CVNA",
    "mcap": 423.53,
    "sbuy": 12,
@@ -822,7 +894,7 @@
    "new": false
   },
   {
-   "rank": 69,
+   "rank": 75,
    "ticker": "AXP",
    "mcap": 2117.7,
    "sbuy": 12,
@@ -834,7 +906,7 @@
    "new": false
   },
   {
-   "rank": 70,
+   "rank": 76,
    "ticker": "NDAQ",
    "mcap": 525.27,
    "sbuy": 12,
@@ -846,7 +918,7 @@
    "new": false
   },
   {
-   "rank": 71,
+   "rank": 77,
    "ticker": "CL",
    "mcap": 750.22,
    "sbuy": 12,
@@ -858,9 +930,9 @@
    "new": false
   },
   {
-   "rank": 72,
+   "rank": 78,
    "ticker": "ESS",
-   "mcap": 173.14,
+   "mcap": 173.16,
    "sbuy": 12,
    "buy": 8,
    "hold": 28,
@@ -870,7 +942,7 @@
    "new": false
   },
   {
-   "rank": 73,
+   "rank": 79,
    "ticker": "FANG",
    "mcap": 571.1,
    "sbuy": 11,
@@ -882,9 +954,9 @@
    "new": false
   },
   {
-   "rank": 74,
+   "rank": 80,
    "ticker": "EXE",
-   "mcap": 223.46,
+   "mcap": 216.25,
    "sbuy": 11,
    "buy": 36,
    "hold": 10,
@@ -894,7 +966,7 @@
    "new": false
   },
   {
-   "rank": 75,
+   "rank": 81,
    "ticker": "LIN",
    "mcap": 2297.66,
    "sbuy": 11,
@@ -906,7 +978,7 @@
    "new": false
   },
   {
-   "rank": 76,
+   "rank": 82,
    "ticker": "WMB",
    "mcap": 871.87,
    "sbuy": 11,
@@ -918,7 +990,7 @@
    "new": false
   },
   {
-   "rank": 77,
+   "rank": 83,
    "ticker": "CRH",
    "mcap": 556.38,
    "sbuy": 11,
@@ -930,7 +1002,7 @@
    "new": false
   },
   {
-   "rank": 78,
+   "rank": 84,
    "ticker": "DELL",
    "mcap": 2872.03,
    "sbuy": 11,
@@ -942,7 +1014,7 @@
    "new": false
   },
   {
-   "rank": 79,
+   "rank": 85,
    "ticker": "RTX",
    "mcap": 2613.57,
    "sbuy": 11,
@@ -954,7 +1026,7 @@
    "new": false
   },
   {
-   "rank": 80,
+   "rank": 86,
    "ticker": "BLK",
    "mcap": 1756.81,
    "sbuy": 11,
@@ -966,7 +1038,7 @@
    "new": false
   },
   {
-   "rank": 81,
+   "rank": 87,
    "ticker": "GEHC",
    "mcap": 314.24,
    "sbuy": 11,
@@ -978,7 +1050,7 @@
    "new": false
   },
   {
-   "rank": 82,
+   "rank": 88,
    "ticker": "EL",
    "mcap": 378.77,
    "sbuy": 11,
@@ -990,7 +1062,7 @@
    "new": false
   },
   {
-   "rank": 83,
+   "rank": 89,
    "ticker": "INVH",
    "mcap": 159.88,
    "sbuy": 11,
@@ -1002,9 +1074,9 @@
    "new": false
   },
   {
-   "rank": 84,
+   "rank": 90,
    "ticker": "PG",
-   "mcap": 3703.98,
+   "mcap": 3701.18,
    "sbuy": 11,
    "buy": 15,
    "hold": 24,
@@ -1014,7 +1086,7 @@
    "new": false
   },
   {
-   "rank": 85,
+   "rank": 91,
    "ticker": "AMD",
    "mcap": 8631.71,
    "sbuy": 10,
@@ -1026,7 +1098,7 @@
    "new": false
   },
   {
-   "rank": 86,
+   "rank": 92,
    "ticker": "DLR",
    "mcap": 652.85,
    "sbuy": 10,
@@ -1038,7 +1110,7 @@
    "new": false
   },
   {
-   "rank": 87,
+   "rank": 93,
    "ticker": "EQIX",
    "mcap": 972.88,
    "sbuy": 10,
@@ -1050,7 +1122,7 @@
    "new": false
   },
   {
-   "rank": 88,
+   "rank": 94,
    "ticker": "ABNB",
    "mcap": 1024.11,
    "sbuy": 10,
@@ -1062,9 +1134,9 @@
    "new": false
   },
   {
-   "rank": 89,
+   "rank": 95,
    "ticker": "LOW",
-   "mcap": 1107.41,
+   "mcap": 1106.72,
    "sbuy": 10,
    "buy": 38,
    "hold": 20,
@@ -1074,7 +1146,7 @@
    "new": false
   },
   {
-   "rank": 90,
+   "rank": 96,
    "ticker": "DAL",
    "mcap": 495.87,
    "sbuy": 10,
@@ -1086,7 +1158,7 @@
    "new": false
   },
   {
-   "rank": 91,
+   "rank": 97,
    "ticker": "AZO",
    "mcap": 504.69,
    "sbuy": 10,
@@ -1098,9 +1170,9 @@
    "new": false
   },
   {
-   "rank": 92,
+   "rank": 98,
    "ticker": "ETN",
-   "mcap": 1519.22,
+   "mcap": 1519.62,
    "sbuy": 10,
    "buy": 36,
    "hold": 8,
@@ -1110,7 +1182,7 @@
    "new": false
   },
   {
-   "rank": 93,
+   "rank": 99,
    "ticker": "CDNS",
    "mcap": 879.91,
    "sbuy": 10,
@@ -1122,84 +1194,12 @@
    "new": false
   },
   {
-   "rank": 94,
+   "rank": 100,
    "ticker": "ORLY",
    "mcap": 722.16,
    "sbuy": 10,
    "buy": 36,
    "hold": 12,
-   "sell": 0,
-   "ssell": 0,
-   "change": null,
-   "new": false
-  },
-  {
-   "rank": 95,
-   "ticker": "LITE",
-   "mcap": 746.52,
-   "sbuy": 10,
-   "buy": 35,
-   "hold": 8,
-   "sell": 0,
-   "ssell": 0,
-   "change": null,
-   "new": false
-  },
-  {
-   "rank": 96,
-   "ticker": "NEM",
-   "mcap": 1249.68,
-   "sbuy": 10,
-   "buy": 30,
-   "hold": 4,
-   "sell": 2,
-   "ssell": 0,
-   "change": null,
-   "new": false
-  },
-  {
-   "rank": 97,
-   "ticker": "INTU",
-   "mcap": 868.92,
-   "sbuy": 10,
-   "buy": 30,
-   "hold": 24,
-   "sell": 2,
-   "ssell": 2,
-   "change": null,
-   "new": false
-  },
-  {
-   "rank": 98,
-   "ticker": "ECL",
-   "mcap": 809.84,
-   "sbuy": 10,
-   "buy": 30,
-   "hold": 8,
-   "sell": 0,
-   "ssell": 0,
-   "change": null,
-   "new": false
-  },
-  {
-   "rank": 99,
-   "ticker": "BKR",
-   "mcap": 552.92,
-   "sbuy": 10,
-   "buy": 30,
-   "hold": 8,
-   "sell": 2,
-   "ssell": 0,
-   "change": null,
-   "new": false
-  },
-  {
-   "rank": 100,
-   "ticker": "KLAC",
-   "mcap": 2162.92,
-   "sbuy": 10,
-   "buy": 29,
-   "hold": 20,
    "sell": 0,
    "ssell": 0,
    "change": null,
